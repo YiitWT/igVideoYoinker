@@ -197,7 +197,7 @@ class InstaRepostBot:
             try:
                 media = self.client.clip_upload(
                     path=upload_path,
-                    caption=caption,
+                    caption="Find your heavenly vibes 💫",
                     configure_timeout=10,
                 )
                 print(f"✅ Upload Complete - ID: {media.id}")
@@ -258,9 +258,14 @@ class InstaRepostBot:
             if not thread.messages:
                 return
             latest_message = thread.messages[0]
+            print(f"📬 New message from {thread.messages[0].user_id}: {latest_message.text}")
+            print(f"📬 Message {latest_message.user_id}, {latest_message.thread_id}")
+            if not latest_message.user_id == "68999939887":
+                print("❌ Not a valid user/message, skipping...")
+                return
             if hasattr(latest_message, 'clip') and latest_message.clip:
                 video_url = latest_message.clip.video_url
-                caption = "Find your heavenly vibes 💫"
+                caption = "Find your heavenly vibes 💫 \n\n"
                 if hasattr(latest_message.clip, 'user') and latest_message.clip.user:
                     caption += f"\n\nReposted from @{latest_message.clip.user.username} \n\n #ambientvibes #chills #aurora #chillvibes #peace #liminal #usa #denver #chill #love #art #runs #colorado #music #nature #drawing #feels #northernlights #travel #creative #solon #hiphop #photography #美术 #haunted #alaska #goodvibes #life #イラスト #auroraborealis #instagood #artwork #artsy #artistic #instaart #instadaily #instalike #instamood #instaartist #instapic #insta"
                 video_path = self.download_reel(video_url)
@@ -272,6 +277,8 @@ class InstaRepostBot:
                     except Exception as e:
                         print(f"Cleanup failed: {e}")
                     print("Reel reposted!" if result else "Repost failed.")
+                    self.client.direct_send_seen(int(latest_message.thread_id))
+                    self.client.direct_send(text="✅ Reposted successfully!", thread_ids=[int(latest_message.thread_id)])
         except Exception as e:
             print(f"Error processing messages: {e}")
 
@@ -297,4 +304,4 @@ if __name__ == "__main__":
         username = input("Enter Instagram username: ")
         password = input("Enter Instagram password: ")
         bot = InstaRepostBot(username=username, password=password)
-    bot.run_continuously(check_interval=60)
+    bot.run_continuously(check_interval=15)
