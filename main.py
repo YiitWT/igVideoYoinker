@@ -260,15 +260,19 @@ class InstaRepostBot:
             latest_message = thread.messages[0]
             print(f"📬 New message from {thread.messages[0].user_id}: {latest_message.text}")
             print(f"📬 Message {latest_message.user_id}, {latest_message.thread_id}")
-            if not latest_message.user_id == "youruserid":
-                print("❌ Not a valid user/message, skipping...")
+            if latest_message.user_id == "": # Bot's ID
                 return
+            if not latest_message.user_id == "": # Your ID
+                self.client.direct_send(text="If you have any issues with this account please contact with @yourmainaccount (mail)", thread_ids=[int(latest_message.thread_id)])
+                return
+            self.client.direct_send_seen(int(latest_message.thread_id))
             if hasattr(latest_message, 'clip') and latest_message.clip:
                 video_url = latest_message.clip.video_url
                 caption = "Find your heavenly vibes 💫 \n\n"
                 if hasattr(latest_message.clip, 'user') and latest_message.clip.user:
                     caption += f"\n\nReposted from @{latest_message.clip.user.username} \n\n #ambientvibes #chills #aurora #chillvibes #peace #liminal #usa #denver #chill #love #art #runs #colorado #music #nature #drawing #feels #northernlights #travel #creative #solon #hiphop #photography #美术 #haunted #alaska #goodvibes #life #イラスト #auroraborealis #instagood #artwork #artsy #artistic #instaart #instadaily #instalike #instamood #instaartist #instapic #insta"
                 video_path = self.download_reel(video_url)
+                self.client.direct_send(text="📥 Downloading video...", thread_ids=[int(latest_message.thread_id)])
                 if video_path:
                     result = self.repost_reel(video_path, caption=caption)
                     try:
@@ -277,10 +281,10 @@ class InstaRepostBot:
                     except Exception as e:
                         print(f"Cleanup failed: {e}")
                     print("Reel reposted!" if result else "Repost failed.")
-                    self.client.direct_send_seen(int(latest_message.thread_id))
                     self.client.direct_send(text="✅ Reposted successfully!", thread_ids=[int(latest_message.thread_id)])
         except Exception as e:
             print(f"Error processing messages: {e}")
+            self.client.direct_send(text="😡 Can't post the video, "+ str(e), thread_ids=[int(latest_message.thread_id)])
 
     def run_continuously(self, check_interval=60):
         print("\n🤖 Bot Active - Monitoring Messages")
