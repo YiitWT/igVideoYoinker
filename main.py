@@ -260,7 +260,7 @@ class InstaRepostBot:
             latest_message = thread.messages[0]
             print(f"📬 New message from {thread.messages[0].user_id}: {latest_message.text}")
             print(f"📬 Message {latest_message.user_id}, {latest_message.thread_id}")
-            if not latest_message.user_id == "68999939887":
+            if not latest_message.user_id == "youruserid":
                 print("❌ Not a valid user/message, skipping...")
                 return
             if hasattr(latest_message, 'clip') and latest_message.clip:
