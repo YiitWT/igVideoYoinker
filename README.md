@@ -25,7 +25,7 @@ An Instagram bot that automatically reposts reels from direct messages with auto
 ## Prerequisites 📋
 
 ```bash
-pip install instagrapi moviepy psutil
+pip install instagrapi moviepy==1.0.3 psutil
 ```
 
 ## Usage 🚀
