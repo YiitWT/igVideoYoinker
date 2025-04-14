@@ -1,6 +1,6 @@
 # igVideoYoinker 🎥
 
-###! DONT FORGET TO CHANGE THE ID ON THE LINE 263
+### ! DONT FORGET TO CHANGE THE ID ON THE LINE 263 & 265
 
 An Instagram bot that automatically reposts reels from direct messages with automated video processing and rate limit handling.
 
